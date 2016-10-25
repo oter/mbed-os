@@ -159,26 +159,32 @@ class Resources:
 
     def relative_to(self, base, dot=False):
         for field in ['inc_dirs', 'headers', 's_sources', 'c_sources',
-                      'cpp_sources', 'lib_dirs', 'objects', 'libraries',
+                      'cpp_sources', 'objects', 'libraries',
                       'lib_builds', 'lib_refs', 'repo_dirs', 'repo_files',
                       'hex_files', 'bin_files', 'json_files']:
             v = [rel_path(f, base, dot) for f in getattr(self, field)]
             setattr(self, field, v)
 
         self.features = {k: f.relative_to(base, dot) for k, f in self.features.iteritems() if f}
+        if len(self.lib_dirs) != 0:
+            print('Debug')
+        self.lib_dirs = {rel_path(v, base, dot) for v in self.lib_dirs}
 
         if self.linker_script is not None:
             self.linker_script = rel_path(self.linker_script, base, dot)
 
     def win_to_unix(self):
         for field in ['inc_dirs', 'headers', 's_sources', 'c_sources',
-                      'cpp_sources', 'lib_dirs', 'objects', 'libraries',
+                      'cpp_sources', 'objects', 'libraries',
                       'lib_builds', 'lib_refs', 'repo_dirs', 'repo_files',
                       'hex_files', 'bin_files', 'json_files']:
             v = [f.replace('\\', '/') for f in getattr(self, field)]
             setattr(self, field, v)
 
         self.features = {k: f.win_to_unix() for k, f in self.features.iteritems() if f}
+        if len(self.lib_dirs) != 0:
+            print('Debug')
+        self.lib_dirs = {v.replace('\\', '/') for v in self.lib_dirs}
 
         if self.linker_script is not None:
             self.linker_script = self.linker_script.replace('\\', '/')
