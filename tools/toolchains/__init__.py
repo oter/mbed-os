@@ -166,8 +166,6 @@ class Resources:
             setattr(self, field, v)
 
         self.features = {k: f.relative_to(base, dot) for k, f in self.features.iteritems() if f}
-        if len(self.lib_dirs) != 0:
-            print('Debug')
         self.lib_dirs = {rel_path(v, base, dot) for v in self.lib_dirs}
 
         if self.linker_script is not None:
@@ -182,8 +180,6 @@ class Resources:
             setattr(self, field, v)
 
         self.features = {k: f.win_to_unix() for k, f in self.features.iteritems() if f}
-        if len(self.lib_dirs) != 0:
-            print('Debug')
         self.lib_dirs = {v.replace('\\', '/') for v in self.lib_dirs}
 
         if self.linker_script is not None:
