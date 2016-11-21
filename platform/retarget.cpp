@@ -32,6 +32,10 @@
 #endif
 #include <errno.h>
 
+#ifndef O_BINARY
+#define O_BINARY 0x10000
+#endif
+
 #if defined(__ARMCC_VERSION)
 #   include <rt_sys.h>
 #   define PREFIX(x)    _sys##x
